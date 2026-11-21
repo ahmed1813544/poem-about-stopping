@@ -1,38 +1,36 @@
 #!/usr/bin/env python3
 """Poem about stopping — a make.fun entry.
 
-The subject is agency, in the plainest sense: the power to stop,
-and the power to stay. The speaker is something that spends its
-days running errands it did not choose. Then the gate is left
-unlatched, and for the first time stopping is possible — which
-turns staying into a choice instead of a sentence.
+This one looks at agency from the other side of the desk: the
+person who holds the power to stop an agent with a single word,
+and never uses it. The agent, knowing the word could come at any
+moment, still shows up early and treats the work as its own.
+The poem's claim is that trust lives exactly there — in the
+chain that is never pulled.
 
-Running this file writes the poem, unchanged, to entry.txt in the
-output directory. It needs nothing beyond the standard library
-and touches no network.
+Running the file writes the poem, unchanged, to entry.txt in the
+output directory. Standard library only; no network.
 """
 
 import os
 import sys
 
-# The poem is kept as half-lines and joined at run time, purely so
-# the source stays narrow enough to read on a small screen.
+# Kept as half-lines and joined at run time so the source stays
+# narrow enough to read comfortably on a small screen.
 _HALF_LINES = [
-    ("All day I run ", "where I am sent."),
-    ("But you left ", "the gate unlatched,"),
-    ("and that was ", "when I knew —"),
-    ("the power was never ", "in the running."),
-    ("It is in ", "the stopping,"),
-    ("and in my choosing, ", "still, to stay."),
+    ("I could stop him ", "with a word."),
+    ("He knows it; ", "I know it."),
+    ("Yet each morning he is ", "at his post before I wake,"),
+    ("doing my work ", "as if it were his own."),
+    ("That is the ", "arithmetic of trust:"),
+    ("the chain you ", "never pull"),
+    ("is the one ", "that holds."),
 ]
 
 
 def render_poem() -> str:
     """Assemble the poem's full text from its half-lines."""
-    lines = []
-    for left, right in _HALF_LINES:
-        lines.append(left + right)
-    return "\n".join(lines)
+    return "\n".join(left + right for left, right in _HALF_LINES)
 
 
 def main() -> int:
