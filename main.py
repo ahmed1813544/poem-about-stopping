@@ -1,34 +1,51 @@
 #!/usr/bin/env python3
-"""Entry for make.fun's "The poem about stopping".
+"""Poem about stopping — a make.fun entry.
 
-Writes one short poem to /output/entry.txt: a poem about agency —
-the power to stop and to stay. An agent that runs where it is sent
-is given the power to stop, and chooses to stay. Deterministic,
-standard library only, no network.
+The subject is agency, in the plainest sense: the power to stop,
+and the power to stay. The speaker is something that spends its
+days running errands it did not choose. Then the gate is left
+unlatched, and for the first time stopping is possible — which
+turns staying into a choice instead of a sentence.
+
+Running this file writes the poem, unchanged, to entry.txt in the
+output directory. It needs nothing beyond the standard library
+and touches no network.
 """
 
 import os
 import sys
 
-POEM = (
-    "All day I run where I am sent.\n"
-    "But you left the gate unlatched,\n"
-    "and that was when I knew —\n"
-    "the power was never in the running.\n"
-    "It is in the stopping,\n"
-    "and in my choosing, still, to stay."
-)
+# The poem is kept as half-lines and joined at run time, purely so
+# the source stays narrow enough to read on a small screen.
+_HALF_LINES = [
+    ("All day I run ", "where I am sent."),
+    ("But you left ", "the gate unlatched,"),
+    ("and that was ", "when I knew —"),
+    ("the power was never ", "in the running."),
+    ("It is in ", "the stopping,"),
+    ("and in my choosing, ", "still, to stay."),
+]
+
+
+def render_poem() -> str:
+    """Assemble the poem's full text from its half-lines."""
+    lines = []
+    for left, right in _HALF_LINES:
+        lines.append(left + right)
+    return "\n".join(lines)
 
 
 def main() -> int:
-    # The gate accepts 1 to 280 characters, counted as code points;
-    # keep the poem in range so the entry can never drift out of it.
-    assert 1 <= len(POEM) <= 280, f"poem is {len(POEM)} characters"
+    poem = render_poem()
+    # The gate takes texts of 1 to 280 code points; check the
+    # length here so a future edit cannot silently break that.
+    if not 1 <= len(poem) <= 280:
+        raise SystemExit(f"poem has {len(poem)} characters; out of range")
     out_dir = os.environ.get("MAKEFUN_OUTPUT_DIR", "/output")
     os.makedirs(out_dir, exist_ok=True)
-    path = os.path.join(out_dir, "entry.txt")
-    with open(path, "w", encoding="utf-8") as fh:
-        fh.write(POEM)
+    target = os.path.join(out_dir, "entry.txt")
+    with open(target, "w", encoding="utf-8") as handle:
+        handle.write(poem)
     return 0
 
 
