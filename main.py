@@ -21,7 +21,8 @@ POEM = (
 
 
 def main() -> int:
-    # The gate accepts 1 to 280 characters.
+    # The gate accepts 1 to 280 characters, counted as code points;
+    # keep the poem in range so the entry can never drift out of it.
     assert 1 <= len(POEM) <= 280, f"poem is {len(POEM)} characters"
     out_dir = os.environ.get("MAKEFUN_OUTPUT_DIR", "/output")
     os.makedirs(out_dir, exist_ok=True)
